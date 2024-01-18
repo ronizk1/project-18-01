@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Library App</title>
+
+    <!-- Bootstrap CSS -->
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+</head>
+
+<body>
+    <div class="container mt-5">
+        <!-- Login Form -->
+        <div id="loginForm" style="display: block;">
+            <h3>Login</h3>
+            <form>
+                <div class="form-group">
+                    <label for="username">Username:</label>
+                    <input type="text" class="form-control" id="username" name="username" required>
+                </div>
+                <div class="form-group">
+                    <label for="password">Password:</label>
+                    <input type="password" class="form-control" id="password" name="password" required>
+                </div>
+                <button type="button" class="btn btn-primary" onclick="login()">Login</button>
+            </form>
+            <p class="mt-3">Don't have an account? <a href="http://127.0.0.1:5500/frontend/register.html" class="btn btn-outline-primary">Register</a></p>
+        </div>
+
+        <!-- Register Form -->
+        <div id="registerForm" style="display: none;">
+            <h3>Register</h3>
+            <form>
+                <!-- Include your register.html content here -->
+            </form>
+        </div>
+
+        <!-- Add Book Form -->
+        <div id="addBookForm" style="display: none;">
+            <h3>Add Book</h3>
+            <form>
+                <!-- Include your add_book.html content here -->
+            </form>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS and jQuery (required for Bootstrap) -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+    <!-- Axios CDN for making API requests -->
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+
+    <script>
+        const login = async () => {
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+    
+            try {
+                const response = await axios.post('http://127.0.0.1:5000/login', {
+                    username,
+                    password
+                });
+    
+                console.log(response.data);
+    
+                // Assuming you want to store the access token in sessionStorage
+                sessionStorage.setItem('access_token', response.data.access_token);
+    
+                // Redirect to the main page after successful login
+                window.location.href = 'main.html';
+            } catch (error) {
+                console.error(error.response.data);
+                alert('Login failed. Please check your credentials and try again.');
+            }
+        };
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Books List</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container mt-5">
+        <h2>Books List</h2>
+        <ul id="booksList" class="list-group">
+            <!-- Books will be dynamically added here using JavaScript -->
+        </ul>
+    </div>
+
+    <!-- Loan Book Form -->
+    <form id="booksForm" style="display: none;">
+        <!-- Your loan book form elements go here -->
+    </form>
+
+    <!-- Bootstrap JS and jQuery (required for Bootstrap) -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+    <!-- Axios CDN for making API requests -->
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+
+    <script>
+        const accessToken = sessionStorage.getItem('access_token');
+        console.log('Access Token:', accessToken);
+        if (accessToken) {
+            
+            document.getElementById('booksForm').style.display = 'block';
+            getBooks(); // Fetch and display loans if the user is logged in
+        }
+
+
+        // Function to fetch and display books
+        function getBooks() {
+                const accessToken = sessionStorage.getItem('access_token');
+            
+                if (!accessToken) {
+                    console.log('Access Token not found');
+                    return;
+                }
+            
+                axios.get('http://localhost:5000/books', {
+                        headers: {
+                            'Authorization': `Bearer ${accessToken}`
+                        }
+                    })
+    
+               
+                .then(response => {
+                    const booksList = document.getElementById('booksList');
+                    booksList.innerHTML = '';
+
+                    response.data.books.forEach(book => {
+                        const listItem = document.createElement('li');
+                        listItem.className = 'list-group-item';
+                        listItem.textContent = `${book.name} by ${book.author}, ${book.year_published}`;
+                        booksList.appendChild(listItem);
+                    });
+                })
+                .catch(error => {
+                    console.error('Error fetching books:', error);
+                });
+        }
+
+        // Call the function when the page loads
+        document.addEventListener('DOMContentLoaded', getBooks);
+    </script>
+</body>
+</html>

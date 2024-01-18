@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Find Book by Name</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container mt-5">
+        <h2>Find Book by Name</h2>
+        <form id="findBookForm">
+            <div class="form-group">
+                <label for="book_name">Book Name:</label>
+                <input type="text" class="form-control" id="book_name" name="book_name" required>
+            </div>
+            <button type="button" class="btn btn-primary" onclick="findBook()">Find Book</button>
+        </form>
+        <div id="bookResult" class="mt-3"></div>
+    </div>
+
+    <!-- Bootstrap JS and jQuery (required for Bootstrap) -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+    <!-- Axios CDN for making API requests -->
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+
+<!-- ... (other code) ... -->
+
+    <script>
+        // Check if the user is logged in
+        const accessToken = sessionStorage.getItem('access_token');
+        console.log('Access Token:', accessToken);
+        if (accessToken) {
+            document.getElementById('findBookForm').style.display = 'block';
+            // Do not call findBook() here as it might trigger unnecessary requests.
+        }
+
+        function findBook() {
+            const accessToken = sessionStorage.getItem('access_token');
+            
+            if (!accessToken) {
+                console.log('Access Token not found');
+                return;
+            }
+
+            const form = document.getElementById('findBookForm');
+            const formData = new FormData(form);
+
+            axios.post('http://localhost:5000/find_book', Object.fromEntries(formData), {
+                headers: {
+                    'Authorization': `Bearer ${accessToken}`
+                }
+            })
+            .then(response => {
+                const bookResult = document.getElementById('bookResult');
+                bookResult.innerHTML = response.data.error ?
+                    `<div class="alert alert-danger">${response.data.error}</div>` :
+                    `<div class="alert alert-success">
+                        <p><strong>Book Name:</strong> ${response.data.book_name}</p>
+                        <p><strong>Author:</strong> ${response.data.author}</p>
+                        <p><strong>Status:</strong> ${response.data.loan_status}</p>
+                    </div>`;
+            })
+            .catch(error => {
+                console.error('Error finding book:', error);
+            });
+        }
+    </script>
+
+<!-- ... (other code) ... -->
+
+</body>
+</html>
+

@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Loan A Book</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+</head>
+
+<body>
+    <div class="container mt-5">
+        <h2>LOAN A BOOK</h2>
+        <div id="welcomeMessage" style="display: none;">
+            <!-- Display welcome message here -->
+            <p></p>
+        </div>
+
+        <!-- Loan Book Form -->
+        <form id="loanBookForm" style="display: none;">
+            <div class="form-group">
+                <label for="customer_name">Customer Name:</label>
+                <input type="text" class="form-control" id="customer_name" name="customer_name" required>
+            </div>
+            <div class="form-group">
+                <label for="book_name">Book Name:</label>
+                <input type="text" class="form-control" id="book_name" name="book_name" required>
+            </div>
+            <button type="button" class="btn btn-primary" onclick="loanBook()">Loan Book</button>
+        </form>
+    </div>
+
+    <!-- Bootstrap JS and jQuery (required for Bootstrap) -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+    <!-- Axios CDN for making API requests -->
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+
+    <script>
+        // Check if the user is logged in
+        const accessToken = sessionStorage.getItem('access_token');
+        if (accessToken) {
+            console.log('Access Token:', accessToken);  // Add this line
+            document.getElementById('welcomeMessage').style.display = 'block';
+            document.getElementById('loanBookForm').style.display = 'block';
+        }
+
+        // Function to loan a book
+// Function to loan a book
+    function loanBook() {
+        // Check if the user is logged in
+        const accessToken = sessionStorage.getItem('access_token');
+        if (!accessToken) {
+            alert('Please log in to loan a book.');
+            // You can redirect the user to the login page here if needed
+            return;
+        }
+
+        // Get form data
+        const customer_name = document.getElementById('customer_name').value;
+        const book_name = document.getElementById('book_name').value;
+
+        // Log form data for debugging
+        console.log('Customer Name:', customer_name);
+        console.log('Book Name:', book_name);
+
+        // Create data object
+        const data = {
+            customer_name: customer_name,
+            book_name: book_name
+        };
+
+        // Log data for debugging
+        console.log('Data:', data);
+
+        // Make a POST request to loan_book endpoint
+        axios.post('http://localhost:5000/loan_book', data, {
+                headers: {
+                    'Authorization': `Bearer ${accessToken}`
+                }
+            })
+            .then(response => {
+                console.log(response.data)
+                alert(response.data);
+            })
+            .catch(error => {
+                console.error('Error loaning book:', error);
+            });
+    }
+
+    </script>
+
+</body>
+
+</html>

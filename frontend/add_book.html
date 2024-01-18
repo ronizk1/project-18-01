@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add A Book</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+</head>
+
+<body>
+    <div class="container mt-5">
+        <h2>ADD A  BOOK</h2>
+        <div id="welcomeMessage" style="display: none;">
+            <!-- Display welcome message here -->
+            <p></p>
+        </div>
+
+        <!-- Add Book Form -->
+        <form id="addBookForm" style="display: none;">
+            <div class="form-group">
+                <label for="name">Name:</label>
+                <input type="text" class="form-control" id="name" name="name" required>
+            </div>
+            <div class="form-group">
+                <label for="author">Author:</label>
+                <input type="text" class="form-control" id="author" name="author" required>
+            </div>
+            <div class="form-group">
+                <label for="year_published">Year Published:</label>
+                <input type="number" class="form-control" id="year_published" name="year_published" required>
+            </div>
+            <div class="form-group">
+                <label for="book_type">Book Type:</label>
+                <select class="form-control" id="book_type" name="book_type" required>
+                    <option value="1">Type 1</option>
+                    <option value="2">Type 2</option>
+                    <option value="3">Type 3</option>
+                </select>
+            </div>
+            <button type="button" class="btn btn-primary" onclick="addBook()">Add Book</button>
+        </form>
+    </div>
+
+    <!-- Bootstrap JS and jQuery (required for Bootstrap) -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+    <!-- Axios CDN for making API requests -->
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+
+    <script>
+        // Check if the user is logged in
+        const accessToken = sessionStorage.getItem('access_token');
+        if (accessToken) {
+            document.getElementById('welcomeMessage').style.display = 'block';
+            document.getElementById('addBookForm').style.display = 'block';
+        }
+
+        // Function to add a book
+// Function to add a book
+// Function to add a book
+        function addBook() {
+            const form = document.getElementById('addBookForm');
+            const formData = new FormData(form);
+
+            // Convert form data to JSON
+            const jsonData = {};
+            formData.forEach((value, key) => {
+                jsonData[key] = value;
+            });
+
+            axios.post('http://localhost:5000/add_book', jsonData, {
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${accessToken}`
+                    }
+                })
+                .then(response => {
+                    alert(response.data.message);
+                })
+                .catch(error => {
+                    console.error('Error adding book:', error);
+                });
+        }
+
+
+    </script>
+</body>
+
+</html>

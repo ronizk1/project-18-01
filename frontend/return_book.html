@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Loan Book</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container mt-5">
+        <h2>Return a Book</h2>
+        <form id="returnBookForm">
+            <div class="form-group">
+                <label for="customer_name_return">Customer Name:</label>
+                <input type="text" class="form-control" id="customer_name_return" name="customer_name_return" required>
+            </div>
+            <div class="form-group">
+                <label for="book_name_return">Book Name:</label>
+                <input type="text" class="form-control" id="book_name_return" name="book_name_return" required>
+            </div>
+            <button type="button" class="btn btn-primary" onclick="returnBook()">Return Book</button>
+        </form>
+    </div>
+
+    <!-- Bootstrap JS and jQuery (required for Bootstrap) -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+    <!-- Axios CDN for making API requests -->
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+
+    <script>
+        // Check if the user is logged in
+        const accessToken = sessionStorage.getItem('access_token');
+        if (accessToken) {
+            console.log('Access Token:', accessToken);  // Add this line
+            document.getElementById('returnBookForm').style.display = 'block';
+        }
+
+
+    function returnBook() {
+        const accessToken = sessionStorage.getItem('access_token');
+        if (!accessToken) {
+            alert('Please log in to return a book.');
+                // You can redirect the user to the login page here if needed
+            return;
+        }
+        
+        const form = document.getElementById('returnBookForm');
+        const formData = new FormData(form);
+        
+        axios.post('http://localhost:5000/return_book', Object.fromEntries(formData), {
+            headers: {
+                'Authorization': `Bearer ${accessToken}`
+            }
+        })
+        .then(response => {
+            alert(response.data.message);
+        })
+        .catch(error => {
+            console.error('Error returning book:', error);
+        });
+    }
+        
+    </script>
+</body>
+</html>

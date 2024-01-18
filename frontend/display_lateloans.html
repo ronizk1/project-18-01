@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>All Loans</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+</head>
+
+<body>
+    <div class="container mt-5">
+        <h2>Late Loans</h2>
+        <div id="welcomeMessage" style="display: none;">
+            <!-- Display welcome message here -->
+            <p></p>
+        </div>
+
+        <!-- Loan Book Form -->
+        <form id="loanBookForm" style="display: none;">
+            <!-- Your loan book form elements go here -->
+        </form>
+
+        <ul id="loansList" class="list-group">
+            <!-- Loans will be dynamically added here using JavaScript -->
+        </ul>
+    </div>
+
+    <!-- Bootstrap JS and jQuery (required for Bootstrap) -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+    <!-- Axios CDN for making API requests -->
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+
+    <script>
+        // Check if the user is logged in
+        const accessToken = sessionStorage.getItem('access_token');
+        console.log('Access Token:', accessToken);
+        if (accessToken) {
+            document.getElementById('welcomeMessage').style.display = 'block';
+            document.getElementById('loanBookForm').style.display = 'block';
+            getLateLoans(); // Fetch and display loans if the user is logged in
+        }
+
+        // Function to fetch and display all loans
+        function getLateLoans() {
+            const accessToken = sessionStorage.getItem('access_token');
+        
+            if (!accessToken) {
+                console.log('Access Token not found');
+                return;
+            }
+        
+            axios.get('http://localhost:5000/late_loans', {
+                headers: {
+                    'Authorization': `Bearer ${accessToken}`
+                }
+            })
+            .then(response => {
+                const loansList = document.getElementById('loansList');
+                loansList.innerHTML = '';
+        
+                response.data.late_loans.forEach(loan => {  // Update this line
+                    const listItem = document.createElement('li');
+                    listItem.className = 'list-group-item';
+                    listItem.textContent = `Customer Name: ${loan.customer_name}, Book Name: ${loan.book_name}, Loan Date: ${loan.loan_date}, Due Date: ${loan.due_date}`;
+                    loansList.appendChild(listItem);
+                });
+            })
+            .catch(error => {
+                console.error('Error fetching late loans:', error);
+            });
+        }
+        
+        
+
+        // Call the function when the page loads
+        document.addEventListener('DOMContentLoaded', getLateLoans);
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Customers List</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container mt-5">
+        <h2>Customers List</h2>
+        <ul id="customersList" class="list-group">
+            <!-- Customers will be dynamically added here using JavaScript -->
+        </ul>
+    </div>
+
+    <!-- Loan Book Form -->
+    <form id="customersForm" style="display: none;">
+                <!-- Your loan book form elements go here -->
+    </form>
+
+    <!-- Bootstrap JS and jQuery (required for Bootstrap) -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+    <!-- Axios CDN for making API requests -->
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+
+    <script>
+
+        // Check if the user is logged in
+        const accessToken = sessionStorage.getItem('access_token');
+        console.log('Access Token:', accessToken);
+        if (accessToken) {
+            
+            document.getElementById('customersForm').style.display = 'block';
+            getCustomers(); // Fetch and display loans if the user is logged in
+        }
+
+        // Function to fetch and display customers
+        function getCustomers() {
+            const accessToken = sessionStorage.getItem('access_token');
+        
+            if (!accessToken) {
+                console.log('Access Token not found');
+                return;
+            }
+        
+            axios.get('http://localhost:5000/customers', {
+                    headers: {
+                        'Authorization': `Bearer ${accessToken}`
+                    }
+                })
+
+           
+                .then(response => {
+                    const customersList = document.getElementById('customersList');
+                    customersList.innerHTML = '';
+
+                    response.data.customers.forEach(customer => {
+                        const listItem = document.createElement('li');
+                        listItem.className = 'list-group-item';
+                        listItem.textContent = `${customer.name}, ${customer.city}, ${customer.age} years old`;
+                        customersList.appendChild(listItem);
+                    });
+                })
+                .catch(error => {
+                    console.error('Error fetching customers:', error);
+                });
+        }
+
+        // Call the function when the page loads
+        document.addEventListener('DOMContentLoaded', getCustomers);
+    </script>
+</body>
+</html>

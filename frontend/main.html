@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Main Page</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+</head>
+
+<body>
+    <div class="container mt-5">
+        <h2>Main Page</h2>
+        <div id="welcomeMessage" style="display: none;">
+            <!-- Display welcome message here -->
+            <p>Welcome to the site! You are logged in.</p>
+        </div>
+
+        <!-- Action Cards -->
+        <div class="card-deck mt-4">
+            <!-- Add Book Card -->
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Add a Book</h5>
+                    <p class="card-text">Click the button to add a new book to the library.</p>
+                    <button class="btn btn-primary" onclick="addBook()">Add Book</button>
+                </div>
+            </div>
+
+            <!-- Loan Book Card -->
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Loan a Book</h5>
+                    <p class="card-text">Click the button to loan a book from the library.</p>
+                    <button class="btn btn-primary" onclick="loanBook()">Loan Book</button>
+                </div>
+            </div>
+
+            <!-- return Book Card -->
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Return a Book</h5>
+                    <p class="card-text">Click the button to return a book to the library.</p>
+                    <button class="btn btn-primary" onclick="ReturnBook()">return Book</button>
+                </div>
+            </div>
+
+
+            <!-- display Loaned Books Card -->
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">All loans</h5>
+                    <p class="card-text">Click the button to display all loans.</p>
+                    
+                    <button class="btn btn-primary" onclick="allLoans()">Display all loans</button>
+                </div>
+            </div>
+
+            <!-- display late loans Books Card -->
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Late loans</h5>
+                    <p class="card-text">Click the button to display Late loans.</p>
+                    
+                    <button class="btn btn-primary" onclick="lateLoans()">Display late loans</button>
+                </div>
+            </div>
+
+            <!-- display customers Card -->
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">All customers</h5>
+                    <p class="card-text">Click the button to display all customers.</p>
+                    
+                    <button class="btn btn-primary" onclick="allcustomers()">Display all customers</button>
+                </div>
+            </div>
+
+            <!-- display books Card -->
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">All books</h5>
+                    <p class="card-text">Click the button to display all books.</p>
+                    
+                    <button class="btn btn-primary" onclick="allbooks()">Display all books</button>
+                </div>
+            </div>
+
+            <!-- find book Card -->
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">find a book</h5>
+                    <p class="card-text">Click the button to find a book.</p>
+                    
+                    <button class="btn btn-primary" onclick="findbook()">Find a book</button>
+                </div>
+            </div>
+
+            <!-- find customer Card -->
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">find a customer</h5>
+                    <p class="card-text">Click the button to find a customer.</p>
+                    
+                    <button class="btn btn-primary" onclick="findcust()">Find a customer</button>
+                </div>
+            </div>
+
+            <!-- Placeholder for Other Action Cards -->
+            <!-- Add more cards for additional actions -->
+        </div>
+
+                <!-- Logout Button -->
+        <div class="mt-4">
+            <button class="btn btn-danger" onclick="logout()">Logout</button>
+        </div>
+
+        <!-- Bootstrap JS and jQuery (required for Bootstrap) -->
+        <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+        <!-- Axios CDN for making API requests -->
+        <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+
+        <script>
+            // Check if the user is logged in
+            const accessToken = sessionStorage.getItem('access_token');
+            if (accessToken) {
+                document.getElementById('welcomeMessage').style.display = 'block';
+            }
+        
+            // Function to add a book
+            function addBook() {
+                // Navigate to the add_book.html
+                window.location.href = 'http://127.0.0.1:5500/frontend/add_book.html';
+            }
+        
+            // Function to loan a book
+            function loanBook() {
+                // Navigate to the loan_book.html
+                window.location.href = 'http://127.0.0.1:5500/frontend/loan_book.html';
+            }
+
+            // Function to loan a book
+            function ReturnBook() {
+                // Navigate to the loan_book.html
+                window.location.href = 'http://127.0.0.1:5500/frontend/return_book.html';
+            }
+
+
+            // Function to loan a book
+            function allLoans() {
+                // Navigate to the loan_book.html
+                window.location.href = 'http://127.0.0.1:5500/frontend/display_allloans.html';
+            }
+        
+            // Function to loan a book
+            function lateLoans() {
+                // Navigate to the loan_book.html
+                window.location.href = 'http://127.0.0.1:5500/frontend/display_lateloans.html';
+            }
+
+            // Function to loan a book
+            function allcustomers() {
+                // Navigate to the loan_book.html
+                window.location.href = 'http://127.0.0.1:5500/frontend/display_allcustomers.html';
+            }
+
+            // Function to loan a book
+            function allbooks() {
+                // Navigate to the loan_book.html
+                window.location.href = 'http://127.0.0.1:5500/frontend/display_allbooks.html';
+            }
+
+            // Function to loan a book
+            function findbook() {
+                // Navigate to the loan_book.html
+                window.location.href = 'http://127.0.0.1:5500/frontend/find_book.html';
+            }
+
+            // Function to loan a book
+            function findcust() {
+                // Navigate to the loan_book.html
+                window.location.href = 'http://127.0.0.1:5500/frontend/find_customer.html';
+            }
+
+                        // Function to handle logout
+            function logout() {
+                            // Clear the access token from sessionStorage
+                sessionStorage.removeItem('access_token');
+                            // Redirect to the login page (adjust the URL as needed)
+                window.location.href = 'http://127.0.0.1:5500/frontend/index.html';
+            }
+        </script>
+        
+    </div>
+</body>
+
+</html>
